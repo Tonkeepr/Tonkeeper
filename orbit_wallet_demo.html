@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111318">
+<title>Orbit Wallet — криптокошелёк</title>
+<style>
+:root{--bg:#101116;--panel:#191b23;--panel2:#222530;--text:#f5f6fb;--muted:#9ba1b2;--accent:#54e0b5;--line:#303340;--red:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:0}
+.app{max-width:470px;min-height:100vh;margin:auto;padding:20px 16px 92px;background:linear-gradient(180deg,#171922 0,#101116 340px)}
+.top{display:flex;align-items:center;justify-content:space-between;margin:4px 0 24px}.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:750;letter-spacing:.2px}.logo{width:35px;height:35px;border-radius:12px;background:linear-gradient(135deg,#71f4c8,#3ca8d5);display:grid;place-items:center;color:#101116;font-weight:900;font-size:19px}
+.iconbtn{width:40px;height:40px;border-radius:14px;background:var(--panel2);color:var(--text);font-size:19px}
+.eyebrow{color:var(--muted);font-size:13px}.balance{font-size:38px;font-weight:750;letter-spacing:-1.5px;margin:5px 0 2px}.change{font-size:13px;color:var(--accent)}
+.balance-card{padding:21px;border-radius:25px;background:linear-gradient(135deg,#252b39,#1a2429);border:1px solid #343a45}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:19px 0 25px}.action{background:transparent;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px}.action .bubble{width:53px;height:53px;border-radius:18px;background:var(--panel2);display:grid;place-items:center;font-size:21px;border:1px solid #303340}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 12px}.section-head h2{font-size:17px;margin:0}.muted{color:var(--muted)}.tiny{font-size:11px;color:var(--muted)}
+.token-list,.activity{background:var(--panel);border:1px solid var(--line);border-radius:21px;overflow:hidden}.token{display:flex;align-items:center;gap:12px;padding:14px 15px;border-bottom:1px solid var(--line)}.token:last-child{border-bottom:0}.coin{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:15px;background:#2d3040}.coin.ton{background:#c7e8ff;color:#1689cc}.coin.btc{background:#392b1e;color:#ffad42}.coin.usdt{background:#173e35;color:#52d7a4}.coin.eth{background:#302d48;color:#b9b0ff}
+.token-main{min-width:0;flex:1}.token-name{font-weight:650}.token-sub{font-size:12px;color:var(--muted);margin-top:2px}.token-right{text-align:right}.token-amount{font-weight:650}.token-value{font-size:12px;color:var(--muted);margin-top:2px}
+.activity-row{display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid var(--line)}.activity-row:last-child{border-bottom:0}.act-icon{width:38px;height:38px;border-radius:14px;background:var(--panel2);display:grid;place-items:center;font-size:17px}.act-main{flex:1}.act-title{font-weight:600}.act-sub{font-size:12px;color:var(--muted)}.empty{padding:22px;color:var(--muted);text-align:center;font-size:13px}
+.notice{margin:20px 0 0;padding:12px 14px;background:#20251f;border:1px solid #384437;border-radius:14px;color:#c6d9c5;font-size:12px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(470px,100%);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 8px max(12px,env(safe-area-inset-bottom));background:rgba(20,21,28,.96);border-top:1px solid var(--line);backdrop-filter:blur(14px)}.nav{background:transparent;color:var(--muted);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px}.nav span{font-size:19px}.nav.active{color:var(--accent)}
+.page{display:none}.page.active{display:block}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:17px;margin-bottom:14px}.panel h2{margin:0 0 14px;font-size:17px}.field{display:block;margin:12px 0}.field span{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field select{width:100%;padding:12px 13px;border-radius:12px;background:#11131a;border:1px solid var(--line);color:var(--text);outline:none}.primary,.secondary,.danger{width:100%;padding:13px;border-radius:13px;font-weight:700;margin-top:8px}.primary{background:var(--accent);color:#0d1916}.secondary{background:var(--panel2);color:var(--text)}.danger{background:#392327;color:#ffb7b7}.rowbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.status{font-size:12px;color:var(--muted);margin-top:10px;min-height:18px}.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#f4f5f7;color:#111;padding:11px 16px;border-radius:12px;box-shadow:0 8px 30px #0007;display:none;max-width:90%;z-index:10}.toast.show{display:block}
+@media(min-width:600px){body{padding:20px 0}.app{border:1px solid #242630;border-radius:30px;min-height:calc(100vh - 40px)}.bottom{bottom:20px;border-radius:0 0 30px 30px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><div class="logo">O</div> Orbit Wallet</div>
+  <button class="iconbtn" aria-label="Настройки" onclick="showPage('settings')">⚙</button>
+</header>
+
+<main>
+<section class="page active" id="home">
+  <div class="balance-card">
+    <div class="eyebrow">Общий баланс · оценка по рынку</div>
+    <div class="balance" id="totalBalance">$2,486.32</div>
+    <div class="change" id="marketStatus">Курсы загружаются…</div>
+    <div class="tiny" style="margin-top:13px">Портфель Orbit · локальный профиль</div>
+  </div>
+  <div class="actions">
+    <button class="action" onclick="showPage('transfer')"><span class="bubble">↗</span>Отправить</button>
+    <button class="action" onclick="showPage('receive')"><span class="bubble">↙</span>Получить</button>
+    <button class="action" onclick="showPage('swap')"><span class="bubble">⇄</span>Обменять</button>
+    <button class="action" onclick="showPage('markets')"><span class="bubble">⌁</span>Рынок</button>
+  </div>
+  <div class="section-head"><h2>Мои активы</h2><span class="tiny" id="updatedAt">—</span></div>
+  <div class="token-list" id="tokenList"></div>
+  <div class="section-head"><h2>Последние операции</h2><button class="iconbtn" style="width:34px;height:34px" onclick="toast('Это локальная история демонстрационного интерфейса')">⋯</button></div>
+  <div class="activity"><div class="empty">Пока нет операций</div></div>
+  <div class="notice">Учебный интерфейс: баланс можно менять в настройках, а операции не отправляют настоящую криптовалюту. Рыночные котировки загружаются из публичного API.</div>
+</section>
+
+<section class="page" id="markets">
+  <div class="section-head"><h2>Рынок</h2><button class="iconbtn" onclick="loadPrices()">↻</button></div>
+  <div class="panel"><div class="eyebrow">Рыночные цены · USD</div><div class="status" id="marketDetail">Загрузка котировок…</div></div>
+  <div class="token-list" id="marketList"></div>
+  <button class="secondary" onclick="loadPrices()">Обновить котировки</button>
+  <p class="tiny">Источник: CoinGecko public API. Доступность обновления зависит от сети и ограничений API.</p>
+</section>
+
+<section class="page" id="transfer">
+  <div class="section-head"><h2>Отправить</h2></div>
+  <div class="panel">
+    <p class="muted">Предварительная форма перевода</p>
+    <label class="field"><span>Актив</span><select id="sendAsset"><option value="ton">Toncoin (TON)</option><option value="usdt">Tether (USDT)</option><option value="btc">Bitcoin (BTC)</option><option value="eth">Ethereum (ETH)</option></select></label>
+    <label class="field"><span>Адрес получателя</span><input id="sendAddress" placeholder="Введите тестовый адрес"></label>
+    <label class="field"><span>Количество</span><input id="sendAmount" type="number" min="0" step="any" placeholder="0.00"></label>
+    <button class="primary" onclick="simulateAction('Перевод не отправлен: это демонстрационный интерфейс.')">Продолжить</button>
+    <div class="status">Реальные блокчейн-переводы здесь не выполняются.</div>
+  </div>
+</section>
+
+<section class="page" id="receive">
+  <div class="section-head"><h2>Получить</h2></div>
+  <div class="panel">
+    <div class="coin ton" style="margin:4px auto 14px;width:66px;height:66px;font-size:23px">T</div>
+    <p style="text-align:center;font-weight:700">Тестовый адрес кошелька</p>
+    <p id="fakeAddress" style="text-align:center;word-break:break-all;color:var(--muted);font-size:12px">EQDemoOrbitWalletAddressNotForDeposits000000</p>
+    <button class="primary" onclick="copyAddress()">Копировать адрес</button>
+    <p class="tiny" style="text-align:center">Не отправляйте средства на этот пример адреса.</p>
+  </div>
+</section>
+
+<section class="page" id="swap">
+  <div class="section-head"><h2>Обмен</h2></div>
+  <div class="panel">
+    <label class="field"><span>Отдаёте</span><select id="swapFrom"><option value="ton">TON</option><option value="usdt">USDT</option><option value="btc">BTC</option><option value="eth">ETH</option></select></label>
+    <label class="field"><span>Получаете</span><select id="swapTo"><option value="usdt">USDT</option><option value="ton">TON</option><option value="btc">BTC</option><option value="eth">ETH</option></select></label>
+    <label class="field"><span>Количество</span><input id="swapAmount" type="number" min="0" step="any" placeholder="0.00" oninput="updateSwapQuote()"></label>
+    <div class="panel" style="padding:12px;background:#11131a"><span class="muted">Ориентировочная оценка</span><div id="swapQuote" style="font-size:20px;font-weight:700;margin-top:5px">—</div></div>
+    <button class="primary" onclick="simulateAction('Обмен не выполнен: это демонстрационный интерфейс.')">Посмотреть обмен</button>
+  </div>
+</section>
+
+<section class="page" id="settings">
+  <div class="section-head"><h2>Настройки</h2></div>
+  <div class="panel">
+    <h2>Локальный демонстрационный баланс</h2>
+    <p class="tiny">Изменения влияют только на отображение в этом браузере и не создают реальные активы.</p>
+    <label class="field"><span>Актив</span><select id="editAsset"><option value="ton">Toncoin (TON)</option><option value="usdt">Tether (USDT)</option><option value="btc">Bitcoin (BTC)</option><option value="eth">Ethereum (ETH)</option></select></label>
+    <label class="field"><span>Количество для отображения</span><input id="editAmount" type="number" min="0" step="any" placeholder="Введите количество"></label>
+    <button class="primary" onclick="saveBalance()">Сохранить отображаемый баланс</button>
+    <div class="status" id="settingsStatus"></div>
+  </div>
+  <div class="panel">
+    <h2>Валюта отображения</h2>
+    <label class="field"><span>Фиатная валюта</span><select id="fiat" onchange="renderAll()"><option value="usd">USD — доллар США</option><option value="eur">EUR — евро</option><option value="rub">RUB — российский рубль</option><option value="kzt">KZT — казахстанский тенге</option></select></label>
+    <button class="secondary" onclick="loadPrices()">Обновить рыночные курсы</button>
+    <button class="danger" onclick="resetBalances()">Сбросить демонстрационные балансы</button>
+  </div>
+  <div class="panel">
+    <h2>О приложении</h2>
+    <p class="muted">Orbit Wallet — независимый учебный макет. Не является Tonkeeper/Keeper и не хранит ключи, не подключается к блокчейну и не проводит платежи.</p>
+  </div>
+</section>
+</main>
+</div>
+<nav class="bottom">
+  <button class="nav active" data-page="home" onclick="showPage('home')"><span>⌂</span>Главная</button>
+  <button class="nav" data-page="markets" onclick="showPage('markets')"><span>⌁</span>Рынок</button>
+  <button class="nav" data-page="activity" onclick="toast('История операций появится после добавления локальных тестовых событий')"><span>◷</span>История</button>
+  <button class="nav" data-page="settings" onclick="showPage('settings')"><span>⚙</span>Настройки</button>
+</nav>
+<div class="toast" id="toast"></div>
+<script>
+const assets={
+ ton:{name:'Toncoin',symbol:'TON',id:'the-open-network',icon:'T',cls:'ton',amount:125.5},
+ usdt:{name:'Tether',symbol:'USDT',id:'tether',icon:'₮',cls:'usdt',amount:1200},
+ btc:{name:'Bitcoin',symbol:'BTC',id:'bitcoin',icon:'₿',cls:'btc',amount:0.008},
+ eth:{name:'Ethereum',symbol:'ETH',id:'ethereum',icon:'◆',cls:'eth',amount:0.12}
+};
+const defaults={ton:125.5,usdt:1200,btc:0.008,eth:0.12};
+let prices={ton:null,usdt:1,btc:null,eth:null};
+let lastUpdated=null;
+const fiatInfo={usd:{symbol:'$',rate:1},eur:{symbol:'€',rate:0.92},rub:{symbol:'₽',rate:92},kzt:{symbol:'₸',rate:500}};
+function money(v){const f=document.getElementById('fiat')?.value||'usd',x=fiatInfo[f];return x.symbol+Number(v*x.rate).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function price(a){return prices[a]??({ton:5.2,usdt:1,btc:68000,eth:2500}[a])}
+function renderAll(){
+ const total=Object.keys(assets).reduce((s,k)=>s+assets[k].amount*price(k),0);
+ document.getElementById('totalBalance').textContent=money(total);
+ document.getElementById('tokenList').innerHTML=Object.keys(assets).map(k=>tokenHTML(k,true)).join('');
+ document.getElementById('marketList').innerHTML=Object.keys(assets).map(k=>tokenHTML(k,false)).join('');
+ document.getElementById('updatedAt').textContent=lastUpdated?'Обновлено '+lastUpdated:'Оценка';
+ document.getElementById('marketDetail').textContent=lastUpdated?'Последнее обновление: '+lastUpdated:'Показаны последние доступные котировки или ориентировочные значения.';
+ updateSwapQuote();
+}
+function tokenHTML(k,withBalance){
+ const a=assets[k],p=price(k),daily=(Math.random()*4-1.8);
+ return `<div class="token"><div class="coin ${a.cls}">${a.icon}</div><div class="token-main"><div class="token-name">${a.name}</div><div class="token-sub">${a.symbol} · ${money(p)} <span style="color:${daily>=0?'var(--accent)':'var(--red)'}">${daily>=0?'+':''}${daily.toFixed(2)}%</span></div></div><div class="token-right">${withBalance?`<div class="token-amount">${a.amount.toLocaleString('ru-RU',{maximumFractionDigits:8})} ${a.symbol}</div><div class="token-value">${money(a.amount*p)}</div>`:`<div class="token-amount">${money(p)}</div><div class="token-value">Цена за 1 ${a.symbol}</div>`}</div></div>`;
+}
+async function loadPrices(){
+ const status=document.getElementById('marketStatus');status.textContent='Обновление котировок…';
+ try{
+  const ids=Object.values(assets).map(a=>a.id).join(',');
+  const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(ids)}&vs_currencies=usd`,{cache:'no-store'});
+  if(!r.ok)throw new Error('API response '+r.status);
+  const d=await r.json();
+  for(const k of Object.keys(assets)){const v=d[assets[k].id]?.usd;if(typeof v==='number')prices[k]=v;}
+  lastUpdated=new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  status.textContent='Рыночные котировки обновлены · '+lastUpdated;
+ }catch(e){status.textContent='Не удалось обновить цены. Проверьте интернет; отображаются последние доступные/ориентировочные значения.'}
+ renderAll();
+}
+function showPage(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
+ document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===id));
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+function simulateAction(msg){toast(msg)}
+function saveBalance(){
+ const k=document.getElementById('editAsset').value,v=Number(document.getElementById('editAmount').value);
+ if(!Number.isFinite(v)||v<0){document.getElementById('settingsStatus').textContent='Введите корректное неотрицательное число.';return}
+ assets[k].amount=v;document.getElementById('settingsStatus').textContent='Отображаемый баланс обновлён локально.';renderAll();toast('Демонстрационный баланс обновлён');
+}
+function resetBalances(){for(const k in assets)assets[k].amount=defaults[k];renderAll();document.getElementById('settingsStatus').textContent='Баланс сброшен к исходным значениям.';toast('Демонстрационные балансы сброшены')}
+function copyAddress(){const s=document.getElementById('fakeAddress').textContent;if(navigator.clipboard?.writeText){navigator.clipboard.writeText(s).then(()=>toast('Тестовый адрес скопирован')).catch(()=>toast(s))}else toast(s)}
+function updateSwapQuote(){const f=document.getElementById('swapFrom')?.value,t=document.getElementById('swapTo')?.value,a=Number(document.getElementById('swapAmount')?.value||0);if(!f||!t)return;const q=t===f?a:a*price(f)/price(t);document.getElementById('swapQuote').textContent=`≈ ${q.toLocaleString('ru-RU',{maximumFractionDigits:8})} ${assets[t].symbol}`}
+document.getElementById('swapFrom').addEventListener('change',updateSwapQuote);document.getElementById('swapTo').addEventListener('change',updateSwapQuote);
+renderAll();loadPrices();setInterval(loadPrices,60000);
+</script>
+</body>
+</html>
